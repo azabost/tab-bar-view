@@ -3,6 +3,7 @@ package com.mklimek.library
 import android.content.Context
 import android.graphics.Color
 import android.graphics.LightingColorFilter
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -54,8 +55,8 @@ class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: Ta
             tabBarView.addView(textView)
             if (separators) {
                 val separator = View(context)
-                separator.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1)
-                separator.setBackgroundColor(Color.BLACK)
+                separator.layoutParams = ViewGroup.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT)
+                separator.background = ColorDrawable(Color.BLACK)
                 tabBarView.addView(separator)
             }
         }
