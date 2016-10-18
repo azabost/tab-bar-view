@@ -20,7 +20,12 @@ class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: Ta
         set(value) {
             field = value
             tabs.filter { tabs.indexOf(it) != value }.forEach {
-                val child = tabBarView.getChildAt(tabs.indexOf(it))
+                var childIndex = tabs.indexOf(it)
+                if (separators)
+                    childIndex *= 2
+
+                val child = tabBarView.getChildAt(childIndex)
+
                 if (child is TextView) {
                     child.background = it.background
                     if(tintSelectedEnabled){
@@ -31,7 +36,12 @@ class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: Ta
                 }
             }
             val selectedTab = tabs.first { tabs.indexOf(it) == value }
-            val selectedChild = tabBarView.getChildAt(tabs.indexOf(selectedTab))
+
+            var selectedTabIndex = tabs.indexOf(selectedTab)
+            if (separators)
+                selectedTabIndex *= 2
+
+            val selectedChild = tabBarView.getChildAt(selectedTabIndex)
             selectedChild.background = selectedTab.backgroundSelected
             if(tintSelectedEnabled){
                 val tv = selectedChild as TextView
