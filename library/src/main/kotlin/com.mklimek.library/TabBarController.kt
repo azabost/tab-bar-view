@@ -5,10 +5,12 @@ import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 
 
-class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: TabBarView) {
+class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: TabBarView, val separators: Boolean) {
 
     var tintSelectedColor = 0
     var tintSelectedEnabled = false
@@ -18,11 +20,13 @@ class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: Ta
             field = value
             tabs.filter { tabs.indexOf(it) != value }.forEach {
                 val child = tabBarView.getChildAt(tabs.indexOf(it))
-                child.background = it.background
-                if(tintSelectedEnabled){
-                    val tv = child as TextView
-                    tv.setTextColor(Color.BLACK)
-                    it.iconId?.colorFilter = null
+                if (child is TextView) {
+                    child.background = it.background
+                    if(tintSelectedEnabled){
+                        val tv = child as TextView
+                        tv.setTextColor(Color.BLACK)
+                        it.iconId?.colorFilter = null
+                    }
                 }
             }
             val selectedTab = tabs.first { tabs.indexOf(it) == value }
@@ -48,6 +52,12 @@ class TabBarController(context: Context, val tabs: List<Tab>, val tabBarView: Ta
             textView.setCompoundDrawablesWithIntrinsicBounds(null, tab.iconId, null, null)
             textView.setOnClickListener { currentItem = tabs.indexOf(tab) }
             tabBarView.addView(textView)
+            if (separators) {
+                val separator = View(context)
+                separator.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1)
+                separator.setBackgroundColor(Color.BLACK)
+                tabBarView.addView(separator)
+            }
         }
     }
 
